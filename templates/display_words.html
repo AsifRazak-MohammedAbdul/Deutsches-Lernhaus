@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Words</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #eceff1; /* Background color similar to screenshot */
+        }
+        .container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+        .scrollable-table {
+            overflow-y: auto;
+            height: 900px; /* Adjust height as needed */
+        }
+        .table {
+            width: 100%;
+            margin-bottom: 0;
+        }
+        .table thead th {
+            background-color: #7e57c2; /* Header background color */
+            color: #ffffff;
+        }
+        .table tbody tr:nth-child(odd) {
+            background-color: #f3e5f5; /* Zebra striping color */
+        }
+        .table tbody tr:hover {
+            background-color: #e1bee7; /* Hover color */
+        }
+        .btn-home {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 16px;
+        }
+        /* Styling for the search input */
+        #searchInput {
+            margin-bottom: 1rem;
+            border-radius: 20px;
+            border: 1px solid #7e57c2;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 class="mb-4">All Words</h2>
+    <input class="form-control" id="searchInput" type="text" placeholder="Search...">
+    <div class="scrollable-table">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>German</th>
+                    <th>English</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="wordsTable">
+                {% for word in words %}
+                <tr>
+                    <td>{{ word.german }}</td>
+                    <td>{{ word.english }}</td>
+                    <td>
+                        <a href="/edit_word/{{ word.id }}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="/delete_word/{{ word.id }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?');">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- Return to Home Button -->
+    <a href="/" class="btn btn-secondary btn-home">Return to Home</a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById('searchInput');
+    const table = document.getElementById('wordsTable');
+    searchInput.addEventListener('keyup', function(e) {
+        const term = e.target.value.toLowerCase();
+        Array.from(table.getElementsByTagName('tr')).forEach(function(row) {
+            const german = row.cells[0].textContent.toLowerCase();
+            const english = row.cells[1].textContent.toLowerCase();
+            if (german.includes(term) || english.includes(term)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+});
+</script>
+
+</body>
+</html>

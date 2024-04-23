@@ -1,0 +1,174 @@
+<!-- templates/question.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Game - Question</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Translate this word:</h2>
+        <h3>{{ word }}</h3>
+        <form id="translation-form" action="/check_translation_answer" method="post">
+            <input type="text" name="answer" placeholder="Enter translation" required>
+            <button type="submit">Submit</button>
+        </form>
+        <div id="feedback" class="feedback"></div>       
+        <p>Direction: {{ direction }}</p>
+    </div>
+
+    <script>
+        document.getElementById('translation-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const feedbackElement = document.getElementById('feedback');
+
+            fetch('/check_translation_answer', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+            .then(data => {
+                feedbackElement.textContent = data.correct ? 'You are Correct!' : `Oops, you are wrong! The correct answer is ${data.correctAnswer}.`;
+                feedbackElement.style.display = 'block';
+
+                // check if game over
+                if (!data.gameOver) {
+                    setTimeout(() => {
+                        window.location.href = '{{ url_for("next_question") }}';
+                    }, 2000); // 2 seconds delay
+                } else {
+                    // redirect to the game over 
+                    window.location.href = '{{ url_for("game_over") }}';
+                }
+            }).catch(error => {
+                feedbackElement.textContent = 'An error occurred: ' + error;
+                feedbackElement.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
+ -->
+
+
+ <!-- templates/question.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Game - Question</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 600px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        h3 {
+            color: #555;
+            background-color: #e7e7e7;
+            display: inline-block;
+            padding: 0.5em 1em;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        form {
+            margin-top: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: calc(100% - 22px); /* Adjust width for padding and border */
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #5cb85c;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        .feedback {
+            padding: 10px;
+            margin: 20px 0;
+            border-radius: 4px;
+            color: white;
+            display: none; /* Hidden by default */
+        }
+        .correct-feedback {
+            background-color: #5cb85c;
+        }
+        .wrong-feedback {
+            background-color: #d9534f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Translate this word:</h2>
+        <h3>{{ word }}</h3>
+        <form id="translation-form" action="/check_translation_answer" method="post">
+            <input type="text" name="answer" placeholder="Enter translation" required>
+            <button type="submit">Submit</button>
+        </form>
+        <div id="feedback" class="feedback"></div>       
+        <p>Direction: {{ direction }}</p>
+    </div>
+
+    <script>
+        document.getElementById('translation-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const feedbackElement = document.getElementById('feedback');
+
+            fetch('/check_translation_answer', {
+                method: 'POST',
+                body: formData
+            }).then(response => response.json())
+            .then(data => {
+                feedbackElement.className = data.correct ? 'feedback correct-feedback' : 'feedback wrong-feedback';
+                feedbackElement.textContent = data.correct ? 'You are Correct!' : `Oops, you are wrong! The correct answer is "${data.correctAnswer}".`;
+                feedbackElement.style.display = 'block';
+
+                // check if game over
+                if (!data.gameOver) {
+                    setTimeout(() => {
+                        window.location.href = '{{ url_for("next_question") }}';
+                    }, 2000); // 2 seconds delay
+                } else {
+                    // redirect to the game over 
+                    window.location.href = '{{ url_for("game_over") }}';
+                }
+            }).catch(error => {
+                feedbackElement.className = 'feedback wrong-feedback';
+                feedbackElement.textContent = 'An error occurred: ' + error;
+                feedbackElement.style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>

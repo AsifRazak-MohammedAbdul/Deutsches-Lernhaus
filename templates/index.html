@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Game</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Navigation Link to Display All Words -->
+        <div class="text-right mb-3">
+            <a href="/display_words" class="btn btn-info">Display All Words</a>
+        </div>
+
+        <h2 class="text-center font-weight-bold mb-4">Deutsches Lernhaus</h2>
+
+        <!-- Flash Messages Display -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+        
+        <!-- Game Options Heading -->
+        <h4 class="text-center mb-3">Game Options</h4>
+
+        <!-- Start Game Form -->
+        <form action="/start" method="post">
+            <div class="form-group">
+                <label>Length</label>
+                <select name="length" class="form-control mb-3">
+                    <option value="10">Short (10 Words)</option>
+                    <option value="25">Medium (25 Words)</option>
+                    <option value="40">Long (40 Words)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Difficulty</label>
+                <select name="difficulty" class="form-control mb-3">
+                    <option value="easy">Easy (70% to Win)</option>
+                    <option value="medium">Medium (80% to Win)</option>
+                    <option value="hard">Hard (90% to Win)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Direction</label>
+                <select name="direction" class="form-control mb-3">
+                    <option value="DE->EN">German to English</option>
+                    <option value="EN->DE">English to German</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Game Type</label>
+                <select name="game_type" class="form-control mb-3">
+                    <option value="translation">Translation Game</option>
+                    <option value="multiple_choice">Multiple Choice Game</option>
+                </select>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mb-4">Start Game</button>
+            </div>
+        </form>
+
+
+        <!-- Separation Line -->
+        <hr>
+
+        <!-- Add Word Heading -->
+        <h4 class="text-center mb-3">Add New Word</h4>
+
+        <!-- Add Word Form -->
+        <form action="/add_word" method="post">
+            <div class="form-row justify-content-center">
+                <div class="form-group col-md-6">
+                    <input type="text" class="form-control mb-2" name="german_word" placeholder="German word" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <input type="text" class="form-control mb-2" name="english_word" placeholder="English translation" required>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-success">Add Word</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

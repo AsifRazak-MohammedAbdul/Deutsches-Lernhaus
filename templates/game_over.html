@@ -1,0 +1,82 @@
+<!-- templates/game_over.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Game - Game Over</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            max-width: 700px;
+            margin: auto;
+            margin-top: 50px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #dee2e6;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .btn-play-again {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container text-center">
+        {% if won %}
+            <h2 class="text-success">Congratulations! You won! 🎉</h2>
+        {% else %}
+            <h4 class="text-danger">Better luck next time, you can do it! 🌟</h4>
+        {% endif %}
+        <p class="lead">Your Score: <strong>{{ score }}%</strong></p>
+        <p class="lead">Required Score: <strong>{{ required_score }}%</strong></p>
+        <a href="/" class="btn btn-primary btn-play-again">Play Again</a>
+    </div>
+    <div class="container">
+        <h3 class="text-left">Review Answers:</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>German</th>
+                    <th>English</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for answer in wrong_answers %}
+                <tr>
+                    <td>{{ answer.german }}</td>
+                    <td>{{ answer.english }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
